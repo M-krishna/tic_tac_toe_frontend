@@ -37,3 +37,17 @@ export function activateUser(data){
         })
     })
 }
+
+export function checkAuth(token){
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}authentication/check/auth`, {
+            headers: {'Authorization': 'Token ' + token}
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}

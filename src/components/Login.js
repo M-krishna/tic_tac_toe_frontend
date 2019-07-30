@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {loginUser} from '../helpers/Helpers';
+import {loginUser} from '../helpers/api';
 
 
 export default class Login extends Component{
@@ -16,7 +16,16 @@ export default class Login extends Component{
     }
 
     login = async () => {
-        await loginUser(this.state)
+        try{
+            let res = await loginUser(this.state);
+            let user_data = res.data.data;
+            localStorage.setItem('user_data', JSON.stringify(user_data));
+            this.props.history.push('/home');
+        }
+        catch (e){
+            const error = new Error(e);
+            console.log(error);
+        }
     }
     render() {
              return (

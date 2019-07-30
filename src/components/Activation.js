@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {activateUser} from '../helpers/Helpers';
+import {activateUser} from '../helpers/api';
 import {Redirect} from 'react-router-dom';
 
 export default class Activation extends Component{

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {signUpUser} from '../helpers/Helpers'
+import {signUpUser} from '../helpers/api'
 
 export default class SignUp extends Component{
     state = {
@@ -17,7 +17,12 @@ export default class SignUp extends Component{
     }
 
     signUp = async () => {
-        await signUpUser(this.state)
+        try{
+            await signUpUser(this.state)
+        }
+        catch (e){
+            console.log(e)
+        }
     }
     render(){
         return(
