@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:8000/v1/'
 
 export function signUpUser(stateData){
     return new Promise((resolve, reject) => {
-        axios.post(BASE_URL + 'authentication/signup', stateData)
+        axios.post(`${BASE_URL}authentication/signup`, stateData)
         .then(response => {
             resolve(response)
         })
@@ -41,6 +41,20 @@ export function activateUser(data){
 export function checkAuth(token){
     return new Promise((resolve, reject) => {
         axios.get(`${BASE_URL}authentication/check/auth`, {
+            headers: {'Authorization': 'Token ' + token}
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}
+
+export function generateGameLink(token){
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}connections/generate/link`, {
             headers: {'Authorization': 'Token ' + token}
         })
         .then((response) => {
