@@ -26,6 +26,20 @@ export function loginUser(stateData){
     })
 }
 
+export function logoutUser(token){
+    return new Promise((resolve, reject) => {
+        axios.post(`${BASE_URL}authentication/logout`, null, {
+            headers: {'Authorization': 'Token ' + token}
+        })
+        .then(response => {
+            resolve(response)
+        })
+        .catch(err => {
+            reject(err)
+        })
+    })
+}
+
 export function activateUser(data){
     return new Promise((resolve, reject) => {
         axios.post(`${BASE_URL}authentication/activate/`+data)

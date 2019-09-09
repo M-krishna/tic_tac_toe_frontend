@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
+import {Form, Icon, Input, Button, Checkbox} from 'antd';
+import 'antd/dist/antd.css';
 import {loginUser} from '../helpers/api';
+import {Link} from 'react-router-dom';
 
 
-export default class Login extends Component{
+class Login extends Component{
 
     state = {
         username: '',
@@ -14,6 +17,15 @@ export default class Login extends Component{
             [e.target.name]: e.target.value
         })
     }
+
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+          if (!err) {
+            console.log('Received values of form: ', values);
+          }
+        });
+      };
 
     login = async () => {
         try{
@@ -28,12 +40,50 @@ export default class Login extends Component{
         }
     }
     render() {
-             return (
-                <React.Fragment>
-                            <input type="email" name="username" onChange={this.onChange} placeholder="email" />
-                            <input type="password" name="password" onChange={this.onChange} placeholder="password" />
-                            <button onClick={this.login}>Login</button>
-                </React.Fragment>
-             )
+        const { getFieldDecorator } = this.props.form;
+        return (
+            <Form onSubmit={this.handleSubmit} className="login-form">
+                <Form.Item>
+                    {getFieldDecorator('username', {
+                        rules: [{ required: true, message: 'Please input your username!' }],
+                    })(
+                        <Input
+                        prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        placeholder="Username"
+                        />,
+                    )}
+                </Form.Item>
+
+                <Form.Item>
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: 'Please input your Password!' }],
+                    })(
+                        <Input
+                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                        type="password"
+                        placeholder="Password"
+                        />,
+                    )}
+                </Form.Item>
+
+                <Form.Item>
+                    {getFieldDecorator('remember', {
+                        valuePropName: 'checked',
+                        initialValue: true,
+                    })(<Checkbox>Remember me</Checkbox>)}
+                    {/* <a className="login-form-forgot" href="">
+                        Forgot password
+                    </a> */}
+                    <Button type="primary" htmlType="submit" className="login-form-button">
+                        Log in
+                    </Button>
+                    Or <Link to="/register">register now!</Link>
+                </Form.Item>
+            </Form>
+        )
     }
 }
+
+const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
+
+export default WrappedNormalLoginForm;
