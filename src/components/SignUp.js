@@ -2,21 +2,26 @@ import React, {Component} from 'react';
 import {signUpUser} from '../helpers/api'
 import {Form, Icon, Input, Button, Tooltip} from 'antd';
 import 'antd/dist/antd.css';
+import {Link} from 'react-router-dom';
 
 class SignUp extends Component{
     state = {
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        confirm_password: ''
+        user: {
+            first_name: '',
+            last_name: '',
+            email: '',
+            password: '',
+            confirm_password: ''
+        }
     }
 
     handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
+            this.setState({
+                ...this.state, user: values
+            }, () => this.signUp());
           }
         });
       };
@@ -33,7 +38,7 @@ class SignUp extends Component{
       validateToNextPassword = (rule, value, callback) => {
         const { form } = this.props;
         if (value && this.state.confirmDirty) {
-          form.validateFields(['confirm'], { force: true });
+          form.validateFields(['confirm_password'], { force: true });
         }
         callback();
       };
@@ -46,17 +51,20 @@ class SignUp extends Component{
 
     signUp = async () => {
         try{
-            await signUpUser(this.state)
+            let res = await signUpUser(this.state.user);
+            console.log(res);
         }
         catch (e){
-            console.log(e)
+            const error = new Error(e);
+            console.log(error);
         }
     }
 
     render(){
         const { getFieldDecorator } = this.props.form;
         return(
-            <Form>
+            <div className="register-form-wrapper">
+            <Form onSubmit={this.handleSubmit} className="register-form"> 
                 <Form.Item label="E-mail">
                     {getFieldDecorator('email', {
                         rules: [
@@ -87,7 +95,7 @@ class SignUp extends Component{
                 </Form.Item>
 
                 <Form.Item label="Confirm Password" hasFeedback>
-                    {getFieldDecorator('confirm', {
+                    {getFieldDecorator('confirm_password', {
                         rules: [
                         {
                             required: true,
@@ -110,7 +118,7 @@ class SignUp extends Component{
                         </span>
                     }
                     >
-                    {getFieldDecorator('firstname', {
+                    {getFieldDecorator('first_name', {
                         rules: [{ required: true, message: 'Please input your first name!', whitespace: true }],
                     })(<Input />)}
                 </Form.Item>
@@ -125,7 +133,7 @@ class SignUp extends Component{
                         </span>
                     }
                     >
-                    {getFieldDecorator('lastname', {
+                    {getFieldDecorator('last_name', {
                         rules: [{ required: true, message: 'Please input your last name!', whitespace: true }],
                     })(<Input />)}
                 </Form.Item>
@@ -134,7 +142,9 @@ class SignUp extends Component{
                     <Button type="primary" htmlType="submit">
                         Register
                     </Button>
-                </Form.Item>
+                    Or <Link to="/login">Sign In</Link>
+                </Form.Item> 
+
                 {/* <input type="text" onChange={this.onChange} name="first_name" placeholder="First Name"/>
                 <input type="text" onChange={this.onChange} name="last_name" placeholder="Last Name" />
                 <input type="email" onChange={this.onChange} name="email" placeholder="Email" />
@@ -142,6 +152,7 @@ class SignUp extends Component{
                 <input type="password" onChange={this.onChange} name="confirm_password" placeholder="Confirm Password" />
                 <button onClick={this.signUp}>Sign Up</button> */}
             </Form>
+            </div>
         )
     }
 }

@@ -1,15 +1,18 @@
-import React, {Component} from 'react';
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
 import 'antd/dist/antd.css';
+import React, {Component} from 'react';
+import {Form, Icon, Input, Button, Checkbox, message, Spin} from 'antd';
 import {loginUser} from '../helpers/api';
 import {Link} from 'react-router-dom';
+
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
 
 class Login extends Component{
 
     state = {
         username: '',
-        password: ''
+        password: '',
+        loading: false
     }
 
     onChange = e => {
@@ -22,7 +25,11 @@ class Login extends Component{
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
           if (!err) {
-            console.log('Received values of form: ', values);
+            this.setState({
+                username: values.username,
+                password: values.password,
+                loading: true
+            }, () => this.login());
           }
         });
       };
@@ -32,16 +39,18 @@ class Login extends Component{
             let res = await loginUser(this.state);
             let user_data = res.data.data;
             localStorage.setItem('user_data', JSON.stringify(user_data));
-            this.props.history.push('/home');
+            this.props.history.push({pathname: '/home', state: user_data});
         }
         catch (e){
             const error = new Error(e);
-            console.log(error);
+            message.error('Invalid Username/Password', 2);
+            this.setState({loading: false});
         }
     }
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
+            <div className="login-form-wrapper">
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                     {getFieldDecorator('username', {
@@ -70,16 +79,20 @@ class Login extends Component{
                     {getFieldDecorator('remember', {
                         valuePropName: 'checked',
                         initialValue: true,
-                    })(<Checkbox>Remember me</Checkbox>)}
+                    })(<Checkbox className="text-align-left">Remember me</Checkbox>)}
                     {/* <a className="login-form-forgot" href="">
                         Forgot password
                     </a> */}
+                    {this.state.loading ? <Spin indicator={antIcon} /> : 
+                    
                     <Button type="primary" htmlType="submit" className="login-form-button">
                         Log in
                     </Button>
-                    Or <Link to="/register">register now!</Link>
+                    }
+                    Or <Link to="/register">Register now!</Link>
                 </Form.Item>
             </Form>
+            </div>
         )
     }
 }

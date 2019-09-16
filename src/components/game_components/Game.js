@@ -6,7 +6,7 @@ export default class Game extends Component{
         return(
             <div className="game">
                 <div className="game-board">
-                    <Board />
+                    <Board player={this.props.player} computer={this.props.computer}/>
                 </div>
             </div>
         )

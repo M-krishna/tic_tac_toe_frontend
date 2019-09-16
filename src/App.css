@@ -1,6 +1,5 @@
 body {
     font: 14px "Century Gothic", Futura, sans-serif;
-    margin: 20px;
   }
   
   ol, ul {
@@ -49,12 +48,55 @@ body {
     margin-left: 20px;
   }
 
-  #components-form-demo-normal-login .login-form {
-    max-width: 300px;
+  .login-form{
+    width: 40% !important;
   }
+
   #components-form-demo-normal-login .login-form-forgot {
     float: right;
   }
   #components-form-demo-normal-login .login-form-button {
     width: 100%;
+  }
+
+  .login-form-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    height: 100vh;
+  }
+
+  .login-form-wrapper .ant-form-item-children{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .text-align-left{
+    text-align: left !important;
+  }
+
+  .text-align-center{
+    text-align: center !important;
+  }
+
+  .register-form{
+    width: 40% !important;
+  }
+
+  .register-form-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    height: 100vh;
+  }
+
+  .register-form-wrapper .ant-form-item-children{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .ant-message-notice ~ .ant-message-notice{
+    display: none;
   }

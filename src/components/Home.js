@@ -1,9 +1,13 @@
-import React, {Component, Fragment} from 'react';
-import Logout from './Logout';
-import {logoutUser} from '../helpers/api';
-import Game from './game_components/Game';
+import 'antd/dist/antd.css';
+import React, {Component} from 'react';
+import { Layout } from 'antd';
+import Navbar from './Navbar';
+// import Game from './game_components/Game';
 import '../App.css';
 import {generateGameLink} from '../helpers/api';
+import {logoutUser} from '../helpers/api';
+
+const { Sider } = Layout;
 
 export default class Home extends Component{
     constructor(props){
@@ -50,6 +54,13 @@ export default class Home extends Component{
         
     }
 
+    // Join Game functionality
+    handleJoinGame = () => {
+        this.setState({
+            join_game: true
+        })
+    }
+
     handleLogout = async () => {
         try{
             const token = JSON.parse(localStorage.getItem('user_data'))['token'];
@@ -63,13 +74,6 @@ export default class Home extends Component{
             const error = new Error(e);
             console.log(error)
         }
-    }
-
-    // Join Game functionality
-    handleJoinGame = () => {
-        this.setState({
-            join_game: true
-        })
     }
 
     // Function for socket connection
@@ -94,23 +98,10 @@ export default class Home extends Component{
     }
 
     render() {
-        
         return(
-            <Fragment>
-                <button onClick={() => this.playWithComputer()}>Play Against Computer</button>
-                <button onClick={() => this.playWithFriend()}>Play with Friend</button>
-                <button onClick={() => this.handleJoinGame()}>Join Game</button>
-                <Logout onClick={() => this.handleLogout()} />
-                {this.state.getting_link ? <p>Getting Game Link...</p> : this.state.game_link}
-                {this.state.join_game ? 
-                    <div>
-                        <input type="text" name="join_game_link" onChange={this.handleChange} />
-                        <button onClick={() => this.joinGame()}>Join</button>
-                    </div>
-                    :
-                    ''
-                }
-            </Fragment>
+            <div>
+                <p>Welcome</p>
+            </div>
         )
     }
 }

@@ -79,3 +79,17 @@ export function generateGameLink(token){
         })
     })
 }
+
+export function profile(token){
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}authentication/profile`, {
+            headers: {'Authorization': 'Token ' + token}
+        })
+        .then((response) => {
+            resolve(response)
+        })
+        .catch((err) => {
+            reject(err)
+        })
+    })
+}

@@ -1,6 +1,10 @@
+import 'antd/dist/antd.css';
 import React, {Component} from 'react';
 import {activateUser} from '../helpers/api';
 import {Redirect} from 'react-router-dom';
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 export default class Activation extends Component{
     state = {
@@ -30,11 +34,11 @@ export default class Activation extends Component{
         }
         if(is_activated){
             return(
-                <React.Fragment><p>Your Account has been activated.</p></React.Fragment>
+                <React.Fragment><Title level={2}>Your Account has been activated.</Title></React.Fragment>
             )
         }
         return(
-            <React.Fragment><p>Something went wrong.</p></React.Fragment>
+            <React.Fragment><Title level={2} className="text-align-center">Oops! Something went wrong.</Title></React.Fragment>
         )
     }
 }
